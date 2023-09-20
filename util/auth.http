@@ -50,7 +50,6 @@ uid: {{uid}}
 client: {{client}}
 expiry: {{expiry}}
 Content-Type: application/json
-
 {
   "title": "New Todo Item"
 }
