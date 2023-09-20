@@ -103,6 +103,12 @@ config.middleware.use ActionDispatch::Cookies
 config.middleware.use ActionDispatch::Session::CookieStore
 ```
 
+```
+rails middleware | grep Cookie
+
+# use ActionDispatch::Cookies
+# use ActionDispatch::Session::CookieStore
+```
 
 ```
 group :development, :test do
