@@ -9,9 +9,9 @@ gem 'devise_token_auth'
 ```
 
 ```
-$ bundle install
-$ rails generate devise:install
-$ rails generate devise_token_auth:install User auth
+bundle install
+rails generate devise:install
+rails generate devise_token_auth:install User auth
 ```
 
 ```
@@ -19,11 +19,11 @@ rails db:migrate
 ```
 
 ```
-$ rails generate model Todo title:string user:references
+rails generate model Todo title:string user:references
 ```
 
 ```
-$ rails db:migrate
+rails db:migrate
 ```
 
 ```
@@ -47,7 +47,7 @@ end
 ```
 
 ```
-$ rails generate controller Todos
+rails generate controller Todos
 ```
 
 ```
