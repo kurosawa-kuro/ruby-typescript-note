@@ -1,14 +1,13 @@
 # ruby-typescript-note
 
-## Rails
-
-### [Rails Environment](./rails-environment.md)
-### [Ruby](./ruby.md)
-### [Ruby on Rails](./ruby_on_rails.md)
-### [Ruby on Rails Others](./ruby_on_rails_others.md)
-### [Heroku](./heroku.md)
-### [AWS](./aws.md)
-### [React](./react.md)
-### [Next.js](./next.js.md)
-### [Vue.js](./vue.js.md)
-### [Nuxt.js](./nuxt.js.md)
+## [Rails Environment](./note/rails-environment.md)
+## [Ruby](./note/ruby.md)
+## [Ruby on Rails](./note/ruby_on_rails.md)
+## [Ruby on Rails Others](./note/ruby_on_rails_others.md)
+## [Heroku](./note/heroku.md)
+## [AWS](./note/aws.md)
+## [React](./note/react.md)
+## [Next.js](./note/next.js.md)
+## [Vue.js](./note/vue.js.md)
+## [Nuxt.js](./note/nuxt.js.md)
+## [Tailwind](./note/tailwind.md)
