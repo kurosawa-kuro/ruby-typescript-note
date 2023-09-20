@@ -1,17 +1,42 @@
-@baseURL = http://localhost:3000
-
-###
-
-# すべてのTodoを取得
-GET {{baseURL}}/todos
-
-###
-
-# 新しいTodoを追加
-POST {{baseURL}}/todos
+### Sign Up (Devise User Creation)
+POST http://localhost:3000/users/sign_up
 Content-Type: application/json
 
 {
-  "title": "新しいタスク"
+  "user": {
+    "email": "test@example.com",
+    "password": "password"
+  }
 }
 
+### Sign In (Devise User Session Creation)
+POST http://localhost:3000/users/sign_in
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "test@example.com",
+    "password": "password"
+  }
+}
+
+###
+
+### List Todos (Replace {{user_token}} and {{user_client}} with values from Sign In response)
+GET http://localhost:3000/todos
+Authorization: Bearer {{user_token}}
+Client: {{user_client}}
+
+###
+
+### Create a New Todo (Replace {{user_token}} and {{user_client}} with values from Sign In response)
+POST http://localhost:3000/todos
+Authorization: Bearer {{user_token}}
+Client: {{user_client}}
+Content-Type: application/json
+
+{
+  "title": "New Todo Item"
+}
+
+###
