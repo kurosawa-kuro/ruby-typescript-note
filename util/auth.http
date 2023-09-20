@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3000
-@email = "test@example.com"
+@email = "test6@example.com"
+@password = "password"
 
 ### Sign Up (Devise User Creation)
 # @name signUp
@@ -8,8 +9,8 @@ Content-Type: application/json
 
 {
   "email": {{email}},
-  "password": "password",
-  "password_confirmation": "password",
+  "password": {{password}},
+  "password_confirmation": {{password}},
   "confirm_success_url": "YOUR_FRONT_END_URL"
 }
 
@@ -22,7 +23,7 @@ Content-Type: application/json
 
 {
   "email": {{email}},
-  "password": "password"
+  "password": {{password}}
 }
 
 ###
