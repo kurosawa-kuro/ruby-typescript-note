@@ -1,38 +1,41 @@
 ### Sign Up (Devise User Creation)
-POST http://localhost:3000/users/sign_up
+POST http://localhost:3000/auth
 Content-Type: application/json
 
 {
-  "user": {
-    "email": "test@example.com",
-    "password": "password"
-  }
+  "email": "test@example.com",
+  "password": "password",
+  "password_confirmation": "password",
+  "confirm_success_url": "YOUR_FRONT_END_URL"
 }
 
-### Sign In (Devise User Session Creation)
-POST http://localhost:3000/users/sign_in
+### Sign In (Devise User Session Creation)POST http://localhost:3000/auth/sign_in
+POST http://localhost:3000/auth/sign_in
 Content-Type: application/json
 
 {
-  "user": {
-    "email": "test@example.com",
-    "password": "password"
-  }
+  "email": "test@example.com",
+  "password": "password"
 }
 
 ###
 
 ### List Todos (Replace {{user_token}} and {{user_client}} with values from Sign In response)
 GET http://localhost:3000/todos
-Authorization: Bearer {{user_token}}
-Client: {{user_client}}
+Authorization: Bearer eyJhY2Nlc3MtdG9rZW4iOiJXbWhfSHI3MldhNDRCNTJUdWI5Y1J3IiwidG9rZW4tdHlwZSI6IkJlYXJlciIsImNsaWVudCI6IkhNM2hmejZUMExmR2FLM1Y2b3l0NXciLCJleHBpcnkiOiIxNjk2NDA0NjE1IiwidWlkIjoidGVzdEBleGFtcGxlLmNvbSJ9
+uid: test@example.com
+client: HM3hfz6T0LfGaK3V6oyt5w
+expiry: 1696404615
+
 
 ###
 
 ### Create a New Todo (Replace {{user_token}} and {{user_client}} with values from Sign In response)
 POST http://localhost:3000/todos
-Authorization: Bearer {{user_token}}
-Client: {{user_client}}
+Authorization: Bearer eyJhY2Nlc3MtdG9rZW4iOiJXbWhfSHI3MldhNDRCNTJUdWI5Y1J3IiwidG9rZW4tdHlwZSI6IkJlYXJlciIsImNsaWVudCI6IkhNM2hmejZUMExmR2FLM1Y2b3l0NXciLCJleHBpcnkiOiIxNjk2NDA0NjE1IiwidWlkIjoidGVzdEBleGFtcGxlLmNvbSJ9
+uid: test@example.com
+client: HM3hfz6T0LfGaK3V6oyt5w
+expiry: 1696404615
 Content-Type: application/json
 
 {
