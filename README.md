@@ -3,6 +3,7 @@
 ## [Rails Environment](./note/rails-environment.md)
 ## [Ruby](./note/ruby.md)
 ## [Ruby on Rails](./note/ruby_on_rails.md)
+## [Ruby on Rails Devise](./note/ruby_on_rails_devise.md)
 ## [Ruby on Rails Others](./note/ruby_on_rails_others.md)
 ## [Heroku](./note/heroku.md)
 ## [AWS](./note/aws.md)
