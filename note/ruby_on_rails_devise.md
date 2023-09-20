@@ -4,6 +4,107 @@
 ・[Deviseのモヤモヤを解消して快適なRailsライフを送ろう！](https://zenn.dev/kitabatake/articles/start-to-like-the-devise)
 
 ```
+gem 'devise'
+gem 'devise_token_auth'
+```
+
+```
+$ bundle install
+$ rails generate devise:install
+$ rails generate devise_token_auth:install User auth
+```
+
+```
+rails db:migrate
+```
+
+```
+$ rails generate model Todo title:string user:references
+```
+
+```
+$ rails db:migrate
+```
+
+```
+# app/models/user.rb
+class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+  include DeviseTokenAuth::Concerns::User
+
+  has_many :todos
+end
+```
+
+```
+# app/models/todo.rb
+class Todo < ApplicationRecord
+  belongs_to :user
+end
+```
+
+```
+$ rails generate controller Todos
+```
+
+```
+# app/controllers/todos_controller.rb
+class TodosController < ApplicationController
+  before_action :authenticate_user!, only: [:create]
+
+  def index
+    @todos = current_user.todos
+    render json: @todos
+  end
+
+  def create
+    @todo = current_user.todos.build(todo_params)
+    if @todo.save
+      render json: @todo, status: :created
+    else
+      render json: @todo.errors, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def todo_params
+    params.require(:todo).permit(:title)
+  end
+end
+```
+
+```
+# config/routes.rb
+Rails.application.routes.draw do
+  mount_devise_token_auth_for 'User', at: 'auth'
+  resources :todos, only: [:index, :create]
+end
+```
+
+```
+# db/seeds.rb
+user = User.create!(email: 'test@example.com', password: 'password', password_confirmation: 'password')
+3.times do |i|
+  user.todos.create!(title: "Sample Todo #{i + 1}")
+end
+```
+
+```
+rails db:seed
+```
+
+```
+# config/application.rb
+config.middleware.use ActionDispatch::Cookies
+config.middleware.use ActionDispatch::Session::CookieStore
+```
+
+
+```
 group :development, :test do
   gem 'rspec-rails', '~> 5.0'
   gem 'factory_bot_rails'
