@@ -3,27 +3,45 @@
 ・[【Rails】devise関連のルーティングまとめ](https://qiita.com/beanzou/items/1ff9c7cba61fd1fa5c80)  
 ・[Deviseのモヤモヤを解消して快適なRailsライフを送ろう！](https://zenn.dev/kitabatake/articles/start-to-like-the-devise)
 
-# Ruby on Rails Devise構築手順
 
-## Railsアプリケーションの作成
+### 1. 新しい Rails API アプリケーションの作成
+
+```bash
 rails new backend --api
 find . -type d -name .git -exec rm -rf {} +
+```
 
-## Gemの追加とインストール
-### Gemfileに追加
+### 2. 必要な gem の追加
+
+Gemfile:
+
+```ruby
+gem "rack-cors"
 gem 'devise'
 gem 'devise_token_auth'
-### インストール
-bundle install
+```
 
-## DeviseとDeviseTokenAuthのセットアップ
+ターミナルで以下を実行:
+
+```bash
+bundle install
+```
+
+### 3. Devise と Devise Token Auth のインストール
+
+```bash
 rails g devise:install
 rails g devise_token_auth:install User auth
 rails db:migrate
+```
 
-## 各種設定変更
+### 4. Devise Token Auth の設定
 
-### DeviseTokenAuth設定 (config/initializers/devise_token_auth.rb)
+config/initializers/devise\_token\_auth.rb:
+
+```ruby
+config.change_headers_on_each_request = false
+  
 config.headers_names = {
   :'authorization' => 'Authorization',
   :'access-token' => 'access-token',
@@ -32,34 +50,50 @@ config.headers_names = {
   :'uid' => 'uid',
   :'token-type' => 'token-type'
 }
-config.change_headers_on_each_request = false
+```
 
-### CORS設定 (config/initializers/cors.rb)
+### 5. CORS の設定
+
+config/initializers/cors.rb:
+
+```ruby
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins 'http://localhost:3000'
+
     resource '*',
-      headers: :any,
-      expose: ["access-token", "expiry", "token-type", "uid", "client"],
-      methods: [:get, :post, :put, :patch, :delete, :options, :head],
-      credentials: true
+        headers: :any,
+        expose: ["access-token", "expiry", "token-type", "uid", "client"],
+        methods: [:get, :post, :put, :patch, :delete, :options, :head],
+        credentials: true
   end
 end
+```
 
-## コントローラの作成と編集
-### コントローラの作成
+### 6. コントローラーの生成
+
+```bash
 rails g controller auth/registrations
 rails g controller auth/sessions
+```
 
-### auth/registrations_controller.rb
+### 7. コントローラーのカスタマイズ
+
+app/controllers/auth/registrations\_controller.rb:
+
+```ruby
 class Auth::RegistrationsController < DeviseTokenAuth::RegistrationsController
   private
+
   def sign_up_params
     params.permit(:email, :password, :password_confirmation, :name)
   end
 end
+```
 
-### auth/sessions_controller.rb
+app/controllers/auth/sessions\_controller.rb:
+
+```ruby
 class Auth::SessionsController < ApplicationController
   def index
     if current_user
@@ -69,27 +103,46 @@ class Auth::SessionsController < ApplicationController
     end
   end
 end
+```
 
-### ApplicationControllerの編集 (app/controllers/application_controller.rb)
+app/controllers/application\_controller.rb:
+
+```ruby
 class ApplicationController < ActionController::Base
   include DeviseTokenAuth::Concerns::SetUserByToken
   skip_before_action :verify_authenticity_token
 end
+```
 
-## アプリケーション全体設定 (config/application.rb)
+### 8. セッションストアの設定
+
+config/application.rb:
+
+```ruby
 config.session_store :cookie_store, key: '_session'
 config.middleware.use ActionDispatch::Cookies
 config.middleware.use config.session_store, config.session_options
+```
 
-## ルーティングの設定 (config/routes.rb)
+### 9. ルーティングの設定
+
+config/routes.rb:
+
+```ruby
 Rails.application.routes.draw do
   mount_devise_token_auth_for 'User', at: 'auth', controllers: {
     registrations: 'auth/registrations'
   }
+
   namespace :auth do
     resources :sessions, only: %i[index]
   end
 end
+```
+
+---
+
+上記の手順に従うことで、Rails アプリケーションに Devise と Devise Token Auth を導入できます。
 
 
 ## Rspec
