@@ -3,123 +3,94 @@
 ・[【Rails】devise関連のルーティングまとめ](https://qiita.com/beanzou/items/1ff9c7cba61fd1fa5c80)  
 ・[Deviseのモヤモヤを解消して快適なRailsライフを送ろう！](https://zenn.dev/kitabatake/articles/start-to-like-the-devise)
 
-## Create
+# Ruby on Rails Devise構築手順
 
-```
-rails new rails-todo-backend --api
+## Railsアプリケーションの作成
+rails new backend --api
 find . -type d -name .git -exec rm -rf {} +
-```
 
-## Devise
-
-```
+## Gemの追加とインストール
+### Gemfileに追加
 gem 'devise'
 gem 'devise_token_auth'
-```
-
-```
+### インストール
 bundle install
-rails generate devise:install
-rails generate devise_token_auth:install User auth
-```
 
-```
+## DeviseとDeviseTokenAuthのセットアップ
+rails g devise:install
+rails g devise_token_auth:install User auth
 rails db:migrate
-```
 
-```
-rails generate model Todo title:string user:references
-```
+## 各種設定変更
 
-```
-rails db:migrate
-```
+### DeviseTokenAuth設定 (config/initializers/devise_token_auth.rb)
+config.headers_names = {
+  :'authorization' => 'Authorization',
+  :'access-token' => 'access-token',
+  :'client' => 'client',
+  :'expiry' => 'expiry',
+  :'uid' => 'uid',
+  :'token-type' => 'token-type'
+}
+config.change_headers_on_each_request = false
 
-```
-# app/models/user.rb
-class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
-  include DeviseTokenAuth::Concerns::User
-
-  has_many :todos
-end
-```
-
-```
-# app/models/todo.rb
-class Todo < ApplicationRecord
-  belongs_to :user
-end
-```
-
-```
-rails generate controller Todos
-```
-
-```
-# app/controllers/todos_controller.rb
-class TodosController < ApplicationController
-  before_action :authenticate_user!, only: [:create]
-
-  def index
-    @todos = current_user.todos
-    render json: @todos
+### CORS設定 (config/initializers/cors.rb)
+Rails.application.config.middleware.insert_before 0, Rack::Cors do
+  allow do
+    origins 'http://localhost:3000'
+    resource '*',
+      headers: :any,
+      expose: ["access-token", "expiry", "token-type", "uid", "client"],
+      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      credentials: true
   end
+end
 
-  def create
-    @todo = current_user.todos.build(todo_params)
-    if @todo.save
-      render json: @todo, status: :created
+## コントローラの作成と編集
+### コントローラの作成
+rails g controller auth/registrations
+rails g controller auth/sessions
+
+### auth/registrations_controller.rb
+class Auth::RegistrationsController < DeviseTokenAuth::RegistrationsController
+  private
+  def sign_up_params
+    params.permit(:email, :password, :password_confirmation, :name)
+  end
+end
+
+### auth/sessions_controller.rb
+class Auth::SessionsController < ApplicationController
+  def index
+    if current_user
+      render json: { is_login: true, data: current_user }
     else
-      render json: @todo.errors, status: :unprocessable_entity
+      render json: { is_login: false, message: "ユーザーは存在しません" }
     end
   end
-
-  private
-
-  def todo_params
-    params.require(:todo).permit(:title)
-  end
 end
-```
 
-```
-# config/routes.rb
-Rails.application.routes.draw do
-  mount_devise_token_auth_for 'User', at: 'auth'
-  resources :todos, only: [:index, :create]
+### ApplicationControllerの編集 (app/controllers/application_controller.rb)
+class ApplicationController < ActionController::Base
+  include DeviseTokenAuth::Concerns::SetUserByToken
+  skip_before_action :verify_authenticity_token
 end
-```
 
-```
-# db/seeds.rb
-user = User.create!(email: 'test@example.com', password: 'password', password_confirmation: 'password')
-3.times do |i|
-  user.todos.create!(title: "Sample Todo #{i + 1}")
-end
-```
-
-```
-rails db:seed
-```
-
-```
-# config/application.rb
-
+## アプリケーション全体設定 (config/application.rb)
 config.session_store :cookie_store, key: '_session'
 config.middleware.use ActionDispatch::Cookies
 config.middleware.use config.session_store, config.session_options
-```
 
-```
-rails middleware | grep Cookie
+## ルーティングの設定 (config/routes.rb)
+Rails.application.routes.draw do
+  mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+    registrations: 'auth/registrations'
+  }
+  namespace :auth do
+    resources :sessions, only: %i[index]
+  end
+end
 
-# use ActionDispatch::Cookies
-# use ActionDispatch::Session::CookieStore
-```
 
 ## Rspec
 
