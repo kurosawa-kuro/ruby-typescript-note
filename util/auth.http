@@ -1,12 +1,13 @@
-@baseUrl = http://localhost:3000
-@email = "test6@example.com"
+@baseUrl = http://localhost:3001
+@email = "test@example.com"
 @password = "password"
 
-### Sign Up (Devise User Creation)
+### User Actions
+
+#### Sign Up (Devise User Creation)
 # @name signUp
 POST {{baseUrl}}/auth
 Content-Type: application/json
-
 {
   "email": {{email}},
   "password": {{password}},
@@ -14,19 +15,25 @@ Content-Type: application/json
   "confirm_success_url": "YOUR_FRONT_END_URL"
 }
 
-###
-
-### Sign In (Devise User Session Creation)
+#### Sign In (Devise User Session Creation)
 # @name signIn
 POST {{baseUrl}}/auth/sign_in
 Content-Type: application/json
-
 {
   "email": {{email}},
   "password": {{password}}
 }
 
-###
+#### Sign Out (Devise User Session Deletion)
+# @name signOut
+DELETE {{baseUrl}}/auth/sign_out
+Authorization: {{Authorization}}
+uid: {{uid}}
+client: {{client}}
+expiry: {{expiry}}
+Content-Type: application/json
+
+{}
 
 # Set user details from signIn response
 @Authorization = {{signIn.response.headers.Authorization}}
@@ -34,16 +41,16 @@ Content-Type: application/json
 @client = {{signIn.response.headers.client}}
 @expiry = {{signIn.response.headers.expiry}}
 
-### List Todos 
+### Todo Actions
+
+#### List Todos 
 GET {{baseUrl}}/todos
 Authorization: {{Authorization}}
 uid: {{uid}}
 client: {{client}}
 expiry: {{expiry}}
 
-###
-
-### Create a New Todo 
+#### Create a New Todo 
 POST {{baseUrl}}/todos
 Authorization: {{Authorization}}
 uid: {{uid}}
@@ -53,5 +60,3 @@ Content-Type: application/json
 {
   "title": "New Todo Item"
 }
-
-###
