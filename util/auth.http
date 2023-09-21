@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:3001
-@email = "test@example.com"
-@password = "password"
+@email = test102@example.com
+@password = password
 
 ### User Actions
 
@@ -8,10 +8,11 @@
 # @name signUp
 POST {{baseUrl}}/auth
 Content-Type: application/json
+
 {
-  "email": {{email}},
-  "password": {{password}},
-  "password_confirmation": {{password}},
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "password_confirmation": "{{password}}",
   "confirm_success_url": "YOUR_FRONT_END_URL"
 }
 
@@ -19,10 +20,19 @@ Content-Type: application/json
 # @name signIn
 POST {{baseUrl}}/auth/sign_in
 Content-Type: application/json
+
 {
-  "email": {{email}},
-  "password": {{password}}
+  "email": "{{email}}",
+  "password": "{{password}}"
 }
+
+###
+# Set user details from signIn response
+@Authorization = {{signIn.response.headers.Authorization}}
+@uid = {{signIn.response.headers.uid}}
+@client = {{signIn.response.headers.client}}
+@expiry = {{signIn.response.headers.expiry}}
+###
 
 #### Sign Out (Devise User Session Deletion)
 # @name signOut
@@ -31,15 +41,7 @@ Authorization: {{Authorization}}
 uid: {{uid}}
 client: {{client}}
 expiry: {{expiry}}
-Content-Type: application/json
 
-{}
-
-# Set user details from signIn response
-@Authorization = {{signIn.response.headers.Authorization}}
-@uid = {{signIn.response.headers.uid}}
-@client = {{signIn.response.headers.client}}
-@expiry = {{signIn.response.headers.expiry}}
 
 ### Todo Actions
 
@@ -57,6 +59,7 @@ uid: {{uid}}
 client: {{client}}
 expiry: {{expiry}}
 Content-Type: application/json
+
 {
   "title": "New Todo Item"
 }
