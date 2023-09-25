@@ -1,17 +1,16 @@
-@baseURL = http://localhost:3000
+@baseUrl = http://localhost:3001
 
-###
+### Todo Actions
 
-# すべてのTodoを取得
-GET {{baseURL}}/todos
-
-###
-
-# 新しいTodoを追加
-POST {{baseURL}}/todos
+#### Create a new Todo
+# @name createTodo
+POST  {{baseUrl}}/todos
 Content-Type: application/json
 
 {
-  "title": "新しいタスク"
+  "title": "abc"
 }
 
+#### Get all Todos
+# @name getTodos
+GET  {{baseUrl}}/todos
