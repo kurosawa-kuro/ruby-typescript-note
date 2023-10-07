@@ -52,3 +52,13 @@ DELETE {{baseUrl}}/users/3
 Accept: application/json
 
 ###
+
+
+### Bookings Actions for a Specific User
+
+#### Get all bookings for a specific User by User ID
+# @name getUserBookings
+GET {{baseUrl}}/users/1/bookings
+Accept: application/json
+
+###
