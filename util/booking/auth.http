@@ -1,0 +1,34 @@
+@baseUrl = http://localhost:3001
+@email = test105@example.com
+@password = password
+
+### User Authentication Actions
+
+#### User Registration
+# @name registerUser
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "{{email}}",
+    "password": "{{password}}",
+    "password_confirmation": "{{password}}"
+  }
+}
+
+#### User Login
+# @name loginUser
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+#### User Logout
+# @name logoutUser
+DELETE {{baseUrl}}/auth/logout
+
+###

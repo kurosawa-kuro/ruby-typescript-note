@@ -1,0 +1,54 @@
+@baseUrl = http://localhost:3001
+
+### User Actions
+
+#### Get all Users
+# @name getUsers
+GET {{baseUrl}}/users
+Accept: application/json
+
+###
+
+#### Get a User by ID
+# @name getUser
+GET {{baseUrl}}/users/2
+Accept: application/json
+
+###
+
+#### Create a new User
+# @name createUser
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "user": {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "password_digest": "hashed_password",
+    "admin": false
+  }
+}
+
+###
+
+#### Update a User
+# @name updateUser
+PATCH {{baseUrl}}/users/2
+Content-Type: application/json
+
+{
+  "user": {
+    "name": "Jane Doe",
+    "email": "jane.doe@example.com"
+  }
+}
+
+###
+
+#### Delete a User
+# @name deleteUser
+DELETE {{baseUrl}}/users/3
+Accept: application/json
+
+###

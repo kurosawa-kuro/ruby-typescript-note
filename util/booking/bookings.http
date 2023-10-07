@@ -1,0 +1,55 @@
+@baseUrl = http://localhost:3001
+
+### Booking Actions
+
+#### Get all Bookings
+# @name getBookings
+GET {{baseUrl}}/bookings
+Accept: application/json
+
+###
+
+#### Get a Booking by ID
+# @name getBooking
+GET {{baseUrl}}/bookings/1
+Accept: application/json
+
+###
+
+#### Create a new Booking
+# @name createBooking
+POST {{baseUrl}}/bookings
+Content-Type: application/json
+
+{
+  "booking": {
+    "user_id": 1,
+    "room_id": 1,
+    "start_date": "2023-10-10",
+    "end_date": "2023-10-20",
+    "total_price": 200.50
+  }
+}
+
+###
+
+#### Update a Booking
+# @name updateBooking
+PATCH {{baseUrl}}/bookings/1
+Content-Type: application/json
+
+{
+  "booking": {
+    "start_date": "2023-10-15",
+    "end_date": "2023-10-25"
+  }
+}
+
+###
+
+#### Delete a Booking
+# @name deleteBooking
+DELETE {{baseUrl}}/bookings/1
+Accept: application/json
+
+###
