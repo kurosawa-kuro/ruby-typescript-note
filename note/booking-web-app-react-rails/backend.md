@@ -8,7 +8,9 @@
 
 ```bash
 rails generate scaffold User name:string email:string:uniq password:string admin:boolean
-rails generate scaffold Room room_number:string:uniq description:text capacity:integer price_per_night:decimal room_type:string
+
+rails generate scaffold Room room_number:string:uniq description:text capacity:integer price_per_night:decimal room_type:string image_path:string
+
 rails generate scaffold Booking user:references room:references start_date:date end_date:date total_price:decimal
 ```
 
@@ -68,7 +70,8 @@ Room.create!(
   description: 'Deluxe single room with ocean view',
   capacity: 1,
   price_per_night: 100.0,
-  room_type: 'Single'
+  room_type: 'Single',
+  image_path: 'https://static.amanaimages.com/imgroom/rf_preview640/11014/11014019870.jpg',
 )
 
 Room.create!(
@@ -77,6 +80,7 @@ Room.create!(
   capacity: 2,
   price_per_night: 180.0,
   room_type: 'Double'
+  image_path: 'https://publicdomainq.net/images/201709/26s/publicdomainq-0013738sid.jpg',
 )
 
 Room.create!(
@@ -85,6 +89,34 @@ Room.create!(
   capacity: 4,
   price_per_night: 350.0,
   room_type: 'Suite'
+  image_path: 'https://gahag.net/img/201605/23s/gahag-0088897439-1.jpg',
+)
+
+Room.create!(
+  room_number: '104',
+  description: 'Sample Room Description for 104',
+  capacity: 2,
+  price_per_night: 200.0,
+  room_type: 'Double',
+  image_path: 'http://www.appli-cation.com/photo/wp-content/uploads/2015/08/0192.jpg'
+)
+
+Room.create!(
+  room_number: '105',
+  description: 'Sample Room Description for 105',
+  capacity: 3,
+  price_per_night: 250.0,
+  room_type: 'Suite',
+  image_path: 'https://static.amanaimages.com/imgroom/rf_preview640/10904/10904001375.jpg'
+)
+
+Room.create!(
+  room_number: '106',
+  description: 'Sample Room Description for 106',
+  capacity: 1,
+  price_per_night: 150.0,
+  room_type: 'Single',
+  image_path: 'https://pro.foto.ne.jp/free/img/images_big/sit0009-001.jpg'
 )
 
 # Bookings
