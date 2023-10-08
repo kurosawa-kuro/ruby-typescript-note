@@ -1,0 +1,55 @@
+@baseUrl = http://localhost:3001
+
+### Room Actions
+
+#### Get all Rooms
+# @name getRooms
+GET {{baseUrl}}/rooms
+Accept: application/json
+
+###
+
+#### Get a Room by ID
+# @name getRoom
+GET {{baseUrl}}/rooms/1
+Accept: application/json
+
+###
+
+#### Create a new Room
+# @name createRoom
+POST {{baseUrl}}/rooms
+Content-Type: application/json
+
+{
+  "room": {
+    "room_number": 202,
+    "description": "Deluxe room with a city view.",
+    "capacity": 2,
+    "price_per_night": 100.50,
+    "room_type": "Deluxe"
+  }
+}
+
+###
+
+#### Update a Room
+# @name updateRoom
+PATCH {{baseUrl}}/rooms/1
+Content-Type: application/json
+
+{
+  "room": {
+    "description": "Updated description for this room.",
+    "price_per_night": 105.00
+  }
+}
+
+###
+
+#### Delete a Room
+# @name deleteRoom
+DELETE {{baseUrl}}/rooms/1
+Accept: application/json
+
+###
