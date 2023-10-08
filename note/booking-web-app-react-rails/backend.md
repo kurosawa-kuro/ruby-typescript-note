@@ -59,23 +59,25 @@ end
 ```ruby
 # db/seeds.rb
 
+# db/seeds.rb
+
 # Users
 user_attributes = [
   {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
+    name: '田中 一郎',
+    email: 'tanaka.ichiro@example.com',
     password: 'password',
     admin: true
   },
   {
-    name: 'Jane Smith',
-    email: 'jane.smith@example.com',
+    name: '佐藤 次郎',
+    email: 'sato.jiro@example.com',
     password: 'password',
     admin: false
   },
   {
-    name: 'Alice Johnson',
-    email: 'alice.johnson@example.com',
+    name: '鈴木 三郎',
+    email: 'suzuki.saburo@example.com',
     password: 'password',
     admin: false
   }

@@ -1,0 +1,50 @@
+@baseUrl = http://localhost:3001
+
+### Room Actions
+
+#### Get all Rooms
+# @name getRooms
+GET {{baseUrl}}/tags
+Accept: application/json
+
+###
+
+#### Get a Room by ID
+# @name getRoom
+GET {{baseUrl}}/tags/1
+Accept: application/json
+
+###
+
+#### Create a new Room
+# @name createRoom
+POST {{baseUrl}}/tags
+Content-Type: application/json
+
+{
+  "tag": {
+    "name": "Deluxe"
+  }
+}
+
+###
+
+#### Update a Room
+# @name updateRoom
+PATCH {{baseUrl}}/tags/1
+Content-Type: application/json
+
+{
+  "tag": {
+    "name": "Deluxe updated"
+  }
+}
+
+###
+
+#### Delete a Room
+# @name deleteRoom
+DELETE {{baseUrl}}/tags/1
+Accept: application/json
+
+###
