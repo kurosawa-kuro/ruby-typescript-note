@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3001
-@email = test105@example.com
+@email = admin@example.com
 @password = password
 
 ### User Authentication Actions
@@ -13,7 +13,8 @@ Content-Type: application/json
   "user": {
     "email": "{{email}}",
     "password": "{{password}}",
-    "password_confirmation": "{{password}}"
+    "password_confirmation": "{{password}}",
+    "admin": true
   }
 }
 
