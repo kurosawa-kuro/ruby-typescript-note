@@ -59,25 +59,23 @@ end
 ```ruby
 # db/seeds.rb
 
-# db/seeds.rb
-
 # Users
 user_attributes = [
   {
-    name: '田中 一郎',
-    email: 'tanaka.ichiro@example.com',
+    name: 'admin User',
+    email: 'admin@example.com',
     password: 'password',
     admin: true
   },
   {
-    name: '佐藤 次郎',
-    email: 'sato.jiro@example.com',
+    name: 'Kurosawa Toshifumi',
+    email: 'kurosawa@example.com',
     password: 'password',
     admin: false
   },
   {
-    name: '鈴木 三郎',
-    email: 'suzuki.saburo@example.com',
+    name: 'Taro Yamada',
+    email: 'yamada@example.com',
     password: 'password',
     admin: false
   }
@@ -88,7 +86,7 @@ User.create!(user_attributes)
 # Image paths for rooms
 image_paths = [
   'https://static.amanaimages.com/imgroom/rf_preview640/11014/11014019870.jpg',
-  'https://publicdomainq.net/images/201709/26s/publicdomainq-0013738sid.jpg',
+  'https://pro.foto.ne.jp/free/img/images_big/sit0009-001.jpg',
   'https://gahag.net/img/201605/23s/gahag-0088897439-1.jpg',
   'http://www.appli-cation.com/photo/wp-content/uploads/2015/08/0192.jpg',
   'https://static.amanaimages.com/imgroom/rf_preview640/10904/10904001375.jpg',
