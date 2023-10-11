@@ -19,12 +19,16 @@ npx create-next-app@latest nextjs_typescript_jest
 ### 2. 必要なパッケージのインストール
 
 ```bash
-npm install --save-dev jest jest-environment-jsdom ts-jest @testing-library/react @testing-library/jest-dom @testing-library/user-event eslint-plugin-jest-dom eslint-plugin-testing-library
+npm install --save-dev jest jest-environment-jsdom ts-jest @types/jest @testing-library/react @testing-library/jest-dom @testing-library/user-event eslint-plugin-jest-dom eslint-plugin-testing-library 
 ```
 
 ### 3. Jestの設定
 
 `jest.config.js` をプロジェクトのルートディレクトリに作成し、以下の内容を追加します：
+
+```bash
+touch jest.config.js
+```
 
 ```javascript
 const nextJest = require('next/jest');
@@ -47,6 +51,10 @@ module.exports = createJestConfig(config);
 
 `jest.setup.js` をプロジェクトのルートディレクトリに作成し、以下の内容を追加します：
 
+```bash
+touch jest.setup.js
+```
+
 ```javascript
 require('@testing-library/jest-dom');
 ```
@@ -66,6 +74,11 @@ require('@testing-library/jest-dom');
 ```
 
 ### 6. テストの書き方
+
+```bash
+mkdir __tests__
+touch __tests__/Home.test.tsx
+```
 
 `__tests__/Home.test.tsx` を作成し、以下のようにテストを書きます：
 
