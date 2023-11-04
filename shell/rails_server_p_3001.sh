@@ -1,1 +1,1 @@
-rails server -p 3001
+bundle exec rails server -p 3001

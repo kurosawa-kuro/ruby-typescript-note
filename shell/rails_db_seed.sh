@@ -1,1 +1,1 @@
-rails db:seed
+bundle exec rails db:seed
