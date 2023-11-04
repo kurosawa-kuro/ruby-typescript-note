@@ -11,7 +11,9 @@ group :development, :test do
   gem 'rspec-rails', '~> 5.0'
   gem 'factory_bot_rails'
   gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec'
 end
 
 group :test do
@@ -25,87 +27,72 @@ end
 bundle install
 ```
 
-## rubo
+## Rubocop
 
 touch .rubocop.yml
 
 ```
 AllCops:
-  # 除外するディレクトリ（自動生成されるファイル）
+  # 自動生成されるファイルやディレクトリを除外
   Exclude:
     - "vendor/**/*"
     - "db/**/*"
     - "config/**/*"
     - "bin/*"
     - "node_modules/**/*"
-
-  # 新ルールを有効化
+  
+  # 新しいCopをデフォルトで有効にする
   NewCops: enable
 
-# 1行あたりの文字数をチェックする
+# 行の最大長を制限し、特定のファイルを除外する
 Layout/LineLength:
   Max: 130
-  # 下記ファイルはチェックの対象から外す
   Exclude:
     - "Rakefile"
     - "spec/rails_helper.rb"
     - "spec/spec_helper.rb"
 
-# RSpecは1つのブロックあたりの行数が多くなるため、チェックの除外から外す
-# ブロック内の行数をチェックする
+# RSpecのブロックは長くなることが多いため、除外する
 Metrics/BlockLength:
   Exclude:
     - "spec/**/*"
-    - Guardfile
+    - "Guardfile"
 
-# Assignment: 変数への代入
-# Branch: メソッド呼び出し
-# Condition: 条件文
-# 上記項目をRubocopが計算して基準値を超えると警告を出す（上記頭文字をとって'Abc'）
+# 複雑度に関する各種メトリクスの制限を設定
 Metrics/AbcSize:
-  Max: 50
-
-# メソッドの中身が複雑になっていないか、Rubocopが計算して基準値を超えると警告を出す
+  Max: 50 # ABCサイズが指定値を超えると警告
 Metrics/PerceivedComplexity:
-  Max: 8
-
-# 循環的複雑度が高すぎないかをチェック（ifやforなどを1メソッド内で使いすぎている）
+  Max: 8 # 認識される複雑度が指定値を超えると警告
 Metrics/CyclomaticComplexity:
-  Max: 10
-
-# メソッドの行数が多すぎないかをチェック
+  Max: 10 # 循環的複雑度が高すぎると警告
 Metrics/MethodLength:
-  Max: 30
-
-# ネストが深すぎないかをチェック（if文のネストもチェック）
+  Max: 30 # メソッドの行数が多すぎると警告
 Metrics/BlockNesting:
-  Max: 5
+  Max: 5 # コードのネストが深すぎると警告
 
-# クラスの行数をチェック（無効）
+# クラスの長さとモジュール内クラスのネストに関するチェックを無効にする
 Metrics/ClassLength:
   Enabled: false
-
-# 空メソッドの場合に、1行のスタイルにしない　NG例：def style1; end
-Style/EmptyMethod:
-  EnforcedStyle: expanded
-
-# クラス内にクラスが定義されていないかチェック（無効）
 Style/ClassAndModuleChildren:
   Enabled: false
 
-# 日本語でのコメントを許可
+# 空のメソッドは複数行スタイルを許可する
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+# 非ASCII文字のコメントを許可する
 Style/AsciiComments:
   Enabled: false
 
-# クラスやモジュール定義前に、それらの説明書きがあるかをチェック（無効）
+# クラスのトップレベルのドキュメントに関するチェックを無効にする
 Style/Documentation:
   Enabled: false
 
-# ％i（）構文を使用していないシンボルで構成される配列リテラルをチェック（無効）
+# %i()構文によるシンボル配列リテラルのチェックを無効にする
 Style/SymbolArray:
   Enabled: false
 
-# 文字列に値が代入されて変わっていないかチェック（無効）
+# 文字列リテラルの変更可能性に関するチェックを無効にする
 Style/FrozenStringLiteralComment:
   Enabled: false
 
