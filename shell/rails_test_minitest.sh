@@ -1,1 +1,1 @@
-rails test
+bundle exec rails test

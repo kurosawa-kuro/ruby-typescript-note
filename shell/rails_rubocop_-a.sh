@@ -1,1 +1,1 @@
-rubocop -a
+bundle exec rubocop -a
