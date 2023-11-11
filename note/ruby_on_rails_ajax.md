@@ -3,75 +3,75 @@
 ### プロジェクトのセットアップ
 1. 新しいRailsアプリケーションの作成:
    ```shell
-   rails new rails-memo-ajax
+   rails new rails-todo-ajax
    ```
 2. 作成したアプリケーションディレクトリへの移動:
    ```shell
-   cd rails-memo-ajax
+   cd rails-todo-ajax
    ```
 
 ### モデルの作成
-1. タイトルと説明を持つ`Memo`モデルの生成:
+1. タイトルと説明を持つ`Todo`モデルの生成:
    ```shell
-   rails g model Memo title:string description:text
+   rails g model Todo title:string
    ```
-2. `memos`テーブルを作成するためのデータベースマイグレーションの実行:
+2. `todos`テーブルを作成するためのデータベースマイグレーションの実行:
    ```shell
    rails db:migrate
    ```
 
 ### コントローラーとビューのセットアップ
-1. 特定のアクションを持つ`Memos`コントローラーの生成:
+1. 特定のアクションを持つ`Todos`コントローラーの生成:
    ```shell
-   rails generate controller Memos index create update destroy ajax_create
+   rails generate controller Todos index create update destroy ajax_create
    ```
 2. 必要なビューファイルの作成:
    ```shell
-   touch app/views/memos/_form.html.erb
-   touch app/views/memos/_list.html.erb
-   touch app/views/memos/_show.html.erb
-   touch app/views/memos/ajax_create.js.erb
-   touch app/views/memos/index.html.erb
+   touch app/views/todos/_form.html.erb
+   touch app/views/todos/_list.html.erb
+   touch app/views/todos/_show.html.erb
+   touch app/views/todos/ajax_create.js.erb
+   touch app/views/todos/index.html.erb
    ```
 
 ### コントローラーアクションの実装
 以下のようにコントローラーアクションを実装してください：
 ```ruby
-# app/controllers/memos_controller.rb
-class MemosController < ApplicationController
+# app/controllers/todos_controller.rb
+class TodosController < ApplicationController
   def index
-    @memo_new = Memo.new
-    @memos = Memo.all
+    @todo_new = Todo.new
+    @todos = Todo.all
   end
  
   def create
-    @memo_new = Memo.new(memos_params)
-    @memo_new.save
+    @todo_new = Todo.new(todos_params)
+    @todo_new.save
     redirect_to root_path
   end
  
   def update
-    @memo = Memo.find(params[:id])
-    @memo.update(memos_params)
+    @todo = Todo.find(params[:id])
+    @todo.update(todos_params)
     redirect_to root_path
   end
  
   def destroy
-    @memo = Memo.find(params[:id])
-    @memo.destroy
+    @todo = Todo.find(params[:id])
+    @todo.destroy
     redirect_to root_path
   end
 
   def ajax_create
-    @memo_new = Memo.new(memos_params)
-    @memo_new.save
-    @memos = Memo.all
+    @todo_new = Todo.new(todos_params)
+    @todo_new.save
+    @todos = Todo.all
   end
  
   private
  
-  def memos_params
-    params.require(:memo).permit(:title, :description)
+  def todos_params
+    params.require(:todo).permit(:title)
   end
 end
 ```
@@ -79,9 +79,9 @@ end
 ### ルーティングの設定
 ```ruby
 Rails.application.routes.draw do
-  root :to => 'memos#index'
-  resources :memos, only: [:index, :update, :destroy, :create]
-  post 'ajax_memos_create', to: 'memos#ajax_create', as: 'ajax_memos_create'
+  root :to => 'todos#index'
+  resources :todos, only: [:index, :update, :destroy, :create]
+  post 'ajax_todos_create', to: 'todos#ajax_create', as: 'ajax_todos_create'
 end
 ```
 
@@ -108,27 +108,24 @@ index.html.erb
             <h2>メモ一覧</h2>
         </div>
  
-        <div class="col-box-3" id="memo-post">
-            <%= render "memos/form", memo_new: @memo_new %>
+        <div class="col-box-3" id="todo-post">
+            <%= render "todos/form", todo_new: @todo_new %>
         </div>
      </div>
  
-    <div class="container flex-start" id="memo-list">
-        <%= render "memos/list", memos: @memos %>
+    <div class="container flex-start" id="todo-list">
+        <%= render "todos/list", todos: @todos %>
     </div>
 </div>
 ```
 
 _form.html.erb
 ```
-<%= form_with model: memo_new, url: ajax_memos_create_path, local: false, method: :post do |f| %>
-    <div class="memo-header">
+<%= form_with model: todo_new, url: ajax_todos_create_path, local: false, method: :post do |f| %>
+    <div class="todo-header">
         <%= f.text_field :title, placeholder: "タイトル", class: "form-box" %>
     </div>
-    <div class="memo-center">
-        <%= f.text_area :description, placeholder: "メモ", class: "form-box" %>
-    </div>
-    <div class="memo-footer">
+    <div class="todo-footer">
         <%= f.submit "作成", class: "btn" %>
     </div>
 <% end %>
@@ -136,28 +133,28 @@ _form.html.erb
 
 _list.html.erb
 ```
-<% memos.reverse.each do |memo| %>
+<% todos.reverse.each do |todo| %>
     <div class="col-box-3">
-        <%= render "memos/show", memo: memo %>
+        <%= render "todos/show", todo: todo %>
     </div>
 <% end %>
 ```
 
 _show.html.erb
 ```
-<%= form_with model: memo, url: memo_path(memo.id), local: true, method: :patch do |f| %>
-    <div class="memo-header">
+<%= form_with model: todo, url: todo_path(todo.id), local: true, method: :patch do |f| %>
+    <div class="todo-header">
         <%= f.text_field :title, placeholder: "タイトル", class: "form-box" %>
     </div>
-    <div class="memo-center">
+    <div class="todo-center">
         <%= f.text_area :description, placeholder: "メモ", class: "form-box" %>
     </div>
-    <div class="memo-footer">
+    <div class="todo-footer">
         <%= f.submit "更新", class: "btn" %>
     </div>
 <% end %>
-<div class="memo-other">
-    <%= button_to "削除", memo_path(memo.id), method: :delete, class: "btn" %>
+<div class="todo-other">
+    <%= button_to "削除", todo_path(todo.id), method: :delete, class: "btn" %>
 </div>
 ```
 
@@ -169,6 +166,6 @@ _show.html.erb
 
 ajax_create.js.erb
 ```
-$('#memo-list').html("<%= j(render "memos/list", memos: @memos) %>");
-$('#memo-post').find('.form-box').val('');
+$('#todo-list').html("<%= j(render "todos/list", todos: @todos) %>");
+$('#todo-post').find('.form-box').val('');
 ```
